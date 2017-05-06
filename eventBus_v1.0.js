@@ -1,5 +1,5 @@
 export class EventBus {
-    static _eventBus= new Array();
+    static eventBus= new Array();
 
     static register(eventName,callback,callbacks) {
         var event=new Event(eventName);
@@ -10,39 +10,38 @@ export class EventBus {
 
         if(callbacks && callbacks.length>0){
             callbacks.forEach((callback)=>{
-                EventBus._eventBus[eventName].addCallback(callback);
+                EventBus.eventBus[eventName].addCallback(callback);
             });
         }
     }
 
     static unregister(eventName){
-       delete EventBus._eventBus[eventName];
+       delete EventBus.eventBus[eventName];
     }
 
     static callEvent(eventName,data){
-        EventBus._eventBus[eventName].fire(data);
+        EventBus.eventBus[eventName].fire(data);
     }
 
     static reset(){
-        EventBus._eventBus=[];
+        EventBus.eventBus=[];
     }
 }
 
 class Event {
     static ID;
-   _callbacks;
     constructor(id) {
         this.ID = id;
-        this._callbacks=new Array();
+        this.callbacks=[];
     }
 
     addCallback(callback){
-        this._callbacks.push(callback);
+        this.callbacks.push(callback);
     }
 
     fire(data){
         for(var i=0;i<this._callbacks.length;i++){
-            this._callbacks[i](data);
+            this.callbacks[i](data);
         }
     }
 }
